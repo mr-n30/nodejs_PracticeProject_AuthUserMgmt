@@ -1,3 +1,4 @@
+const e = require('express');
 const express = require('express');
 
 const router = express.Router();
@@ -11,9 +12,6 @@ let friends = {
 
 // GET request: Retrieve all friends
 router.get("/", (req, res) => {
-
-  // Update the code here
-
   res.status(200).send(friends)//This line is to be replaced with actual return value
 });
 
@@ -40,16 +38,26 @@ router.post("/", (req, res) => {
 
 // PUT request: Update the details of a friend with email id
 router.put("/:email", (req, res) => {
-  // Update the code here
+  const email = req.params.email
 
-  res.send("Yet to be implemented")//This line is to be replaced with actual return value
+  if (typeof email === 'undefined') {
+    return res.send('Missing parameters')
+  } else if (typeof friends[email] === 'undefined') {
+    return res.send('Not found')
+  } else {
+    const { firstName, lastName, DOB } = req.body
+    if ([firstName, lastName, DOB].some(item => typeof item === 'undefined')) return res.send('Missing parameters')
+    friends[email] = { [firstName]: firstName, [lastName]: lastName, [DOB]: DOB }
+    return res.send(friends[email])
+  }
 });
 
 
 // DELETE request: Delete a friend by email id
 router.delete("/:email", (req, res) => {
-  // Update the code here
-  res.send("Yet to be implemented")//This line is to be replaced with actual return value
+  if (typeof req.params.email === 'undefined') return res.send('Missing parameters')
+  delete friends[req.params.email]
+  res.send("User deleted")
 });
 
 module.exports = router;
