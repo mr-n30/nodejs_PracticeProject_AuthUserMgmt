@@ -37,7 +37,7 @@ const app = express();
 
 app.use(session({secret:"fingerpint"},resave=true,saveUninitialized=true));
 
-app.use(express.json());
+app.use(express.json()); // convert every request body to JSON middleware
 
 // Middleware to authenticate requests to "/friends" endpoint
 app.use("/friends", function auth(req, res, next) {
@@ -105,10 +105,13 @@ app.post("/register", (req, res) => {
     // Return error if username or password is missing
     return res.status(404).json({message: "Unable to register user."});
 });
+app.get("/register", (req, res) => {
+    return res.status(405).json({"error": "Method not allowed: GET"})
+})
 
 
 const PORT =5000;
 
 app.use("/friends", routes);
 
-app.listen(PORT,()=>console.log("Server is running"));
+app.listen(PORT,()=>console.log(`Server is running at http://127.0.0.1:${PORT}`));
