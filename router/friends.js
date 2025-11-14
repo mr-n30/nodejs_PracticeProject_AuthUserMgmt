@@ -11,13 +11,22 @@ let friends = {
 
 // GET request: Retrieve all friends
 router.get("/",(req,res)=>{
-  res.send(friends['johnsmith@gamil.com'])
+  res.send(friends)
 });
 
 // GET by specific ID request: Retrieve a single friend with email ID
 router.get("/:email",(req,res)=>{
-  // Update the code here
-  res.send("Yet to be implemented")//This line is to be replaced with actual return value
+  const email = req.params.email
+  if (!email) {
+    res.send("404")
+  }
+
+  const found = friends[email]
+  if (!found) {
+    res.send(401)
+  }
+
+  res.send(found)
 });
 
 
