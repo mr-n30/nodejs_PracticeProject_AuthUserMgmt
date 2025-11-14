@@ -32,8 +32,13 @@ router.get("/:email",(req,res)=>{
 
 // POST request: Add a new friend
 router.post("/",(req,res)=>{
-  // Update the code here
-  res.send("Yet to be implemented")//This line is to be replaced with actual return value
+  if (friends.hasOwnProperty(req.body.email)) {
+    res.send("403 User Already Exists!")
+  }
+
+  friends[req.body.email] = { "firstName": req.body.firstName, "lastName": req.body.lastName, "DOB": req.body.DOB }
+
+  res.send({"status": "user created", friends})
 });
 
 
