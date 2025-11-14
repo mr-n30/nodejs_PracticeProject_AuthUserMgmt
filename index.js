@@ -54,8 +54,11 @@ app.use("/friends", function auth(req, res, next) {
                 return res.status(403).json({ message: "User not authenticated" });
             }
         });
-    } else {
-        return res.status(403).json({ message: "User not logged in" });
+    } 
+    
+    else {
+        // return res.status(403).json({ message: "User not logged in" });
+        next()
     }
 });
 
@@ -107,7 +110,7 @@ app.post("/register", (req, res) => {
 });
 
 
-const PORT =5000;
+const PORT =1337;
 
 app.use("/friends", routes);
 
