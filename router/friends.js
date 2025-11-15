@@ -23,7 +23,7 @@ router.get("/:email",(req,res)=>{
 
   const found = friends[email]
   if (!found) {
-    res.send(401)
+    res.send(404)
   }
 
   res.send(found)
@@ -44,8 +44,19 @@ router.post("/",(req,res)=>{
 
 // PUT request: Update the details of a friend with email id
 router.put("/:email", (req, res) => {
-  // Update the code here
-  res.send("Yet to be implemented")//This line is to be replaced with actual return value
+  const email = req.params.email
+  if (!email) res.send("Missing Email parameter")
+  if(friends.hasOwnProperty(email)) {
+    if (req.body.DOB && req.body.firstName && req.body.lastName) {
+      friends[email] = {"firstName": req.body.firstName, "lastName": req.body.lastName, "DOB": req.body.DOB}
+      res.send(friends[email])
+    }
+    else {
+      res.send("Missing firstName, lastName, or DOB parameter!")
+    }
+  } else {
+    res.send("User email doesn't exist!")
+  }
 });
 
 
